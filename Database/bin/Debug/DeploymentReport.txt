@@ -1,0 +1,21 @@
+﻿** Highlights
+     Tables that will be rebuilt
+       None
+     Clustered indexes that will be dropped
+       None
+     Clustered indexes that will be created
+       None
+     Possible data issues
+       None
+
+** User actions
+     Create
+       [dbo].[Client] (Table)
+       [dbo].[Employee] (Table)
+       [dbo].[Orders] (Table)
+       [dbo].[RepairType] (Table)
+       Foreign Key: unnamed constraint on [dbo].[Orders] (Foreign Key)
+       Foreign Key: unnamed constraint on [dbo].[Orders] (Foreign Key)
+       Foreign Key: unnamed constraint on [dbo].[Orders] (Foreign Key)
+
+** Supporting actions

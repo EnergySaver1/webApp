@@ -1,0 +1,10 @@
+C:\Users\ksedl\source\repos\WebApplication1\Database\bin\Debug\Database.dacpac
+C:\Users\ksedl\source\repos\WebApplication1\Database\bin\Debug\Database.dll
+C:\Users\ksedl\source\repos\WebApplication1\Database\bin\Debug\Database.pdb
+C:\Users\ksedl\source\repos\WebApplication1\Database\obj\Debug\Database.sqlproj.AssemblyReference.cache
+C:\Users\ksedl\source\repos\WebApplication1\Database\obj\Debug\Model.xml
+C:\Users\ksedl\source\repos\WebApplication1\Database\obj\Debug\refactor.xml
+C:\Users\ksedl\source\repos\WebApplication1\Database\obj\Debug\postdeploy.sql
+C:\Users\ksedl\source\repos\WebApplication1\Database\obj\Debug\predeploy.sql
+C:\Users\ksedl\source\repos\WebApplication1\Database\obj\Debug\Database.dll
+C:\Users\ksedl\source\repos\WebApplication1\Database\obj\Debug\Database.pdb
