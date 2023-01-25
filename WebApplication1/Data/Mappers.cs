@@ -190,7 +190,7 @@ namespace WebApplication1.Data
 
             //close the connection
             _connection.Close();
-            
+
             return employee;
         }
 
@@ -209,7 +209,7 @@ namespace WebApplication1.Data
             command.Parameters.AddWithValue("@Salary", employee.Salary);
             command.Parameters.AddWithValue("@DateofEmployment", employee.DateOfEmployment);
             command.Parameters.AddWithValue("@BirthNumber", employee.BirthNumber);
-        
+
             //open the connection
             _connection.Open();
             //execute the command
@@ -226,7 +226,7 @@ namespace WebApplication1.Data
             SqlCommand command = new SqlCommand("DELETE FROM Employees WHERE Id = @Id", _connection);
 
             _connection.Close();
-           
+
         }
 
 
@@ -319,7 +319,7 @@ namespace WebApplication1.Data
             _connection.Open();
 
             SqlCommand command = new SqlCommand("INSERT INTO Orders (Start_date, End_date, State, Description, Customer_id, Employee_id, Price) VALUES (@Start_date, @End_date, @State, @Description, @Customer_id, @Employee_id, @Price)", _connection);
-            
+
             _connection.Close();
 
         }
@@ -434,6 +434,383 @@ namespace WebApplication1.Data
             //close the connection
             _connection.Close();
 
+        }
+    }
+
+    //create data mapper for class SparePart from WebApplication1.Models; to sql server
+    public class SparePartDataMapper
+    {
+        //create a connection to the database
+        private SqlConnection _connection;
+        //create a constructor for the class
+        public SparePartDataMapper()
+        {
+            //create a connection string
+            string connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=Database;Integrated Security=True;Connect Timeout=60;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+            //create a connection
+            _connection = new SqlConnection(connectionString);
+        }
+        //create a method to get all the spare parts
+        public List<SparePart> GetAllSpareParts()
+        {
+            //create a list of spare parts
+            List<SparePart> spareParts = new List<SparePart>();
+            //create a command
+            SqlCommand command = new SqlCommand("SELECT * FROM SpareParts", _connection);
+            //open the connection
+            _connection.Open();
+            //create a reader
+            SqlDataReader reader = command.ExecuteReader();
+            //read the data
+            while (reader.Read())
+            {
+                //create a spare part
+                SparePart sparePart = new SparePart();
+                //get the data from the reader
+                sparePart.Id = (int)reader["Id"];
+                sparePart.Type = (string)reader["Name"];
+                sparePart.Manufacturer = (string)reader["Manufacturer"];
+                sparePart.Price = (decimal)reader["Price"];
+                sparePart.Order_id = (int)reader["Order_id"];
+                sparePart.Available = (bool)reader["Available"];
+
+                //add the spare part to the list
+                spareParts.Add(sparePart);
+            }
+            //close the connection
+            _connection.Close();
+            //return the list
+            return spareParts;
+        }
+        //create a method to get a spare part by id
+        public SparePart GetSparePartById(int id)
+        {
+            //create a spare part
+            SparePart sparePart = new SparePart();
+            //create a command
+            SqlCommand command = new SqlCommand("SELECT * FROM SpareParts WHERE Id = @Id", _connection);
+            //add the parameter
+            command.Parameters.AddWithValue("@Id", id);
+            //open the connection
+            _connection.Open();
+            //create a reader
+            SqlDataReader reader = command.ExecuteReader();
+            //read the data
+            while (reader.Read())
+            {
+                //get the data from the reader
+                sparePart.Id = (int)reader["Id"];
+                sparePart.Type = (string)reader["Name"];
+                sparePart.Manufacturer = (string)reader["Manufacturer"];
+                sparePart.Price = (decimal)reader["Price"];
+                sparePart.Order_id = (int)reader["Order_id"];
+                sparePart.Available = (bool)reader["Available"];
+            }
+
+            //close the connection
+            _connection.Close();
+
+            //return the spare part
+            return sparePart;
+
+        }
+
+        //create a method to insert a spare part
+        public void InsertSparePart(SparePart sparePart)
+        {
+            //create a command
+            SqlCommand command = new SqlCommand("INSERT INTO SpareParts (Name, Manufacturer, Price, Order_id, Available) VALUES (@Name, @Manufacturer, @Price, @Order_id, @Available)", _connection);
+            //add the parameters
+            command.Parameters.AddWithValue("@Name", sparePart.Type);
+            command.Parameters.AddWithValue("@Manufacturer", sparePart.Manufacturer);
+            command.Parameters.AddWithValue("@Price", sparePart.Price);
+            command.Parameters.AddWithValue("@Order_id", sparePart.Order_id);
+            command.Parameters.AddWithValue("@Available", sparePart.Available);
+            //open the connection
+            _connection.Open();
+            //execute the command
+            command.ExecuteNonQuery();
+            //close the connection
+            _connection.Close();
+        }
+    }
+
+    //create data mapper for class Warehouse from WebApplication1.Models; to sql server
+    public class WarehouseDataMapper
+    {
+        //create a connection to the database
+        private SqlConnection _connection;
+        //create a constructor for the class
+        public WarehouseDataMapper()
+        {
+            //create a connection string
+            string connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=Database;Integrated Security=True;Connect Timeout=60;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+            //create a connection
+            _connection = new SqlConnection(connectionString);
+        }
+        //create a method to get all the warehouses
+        public List<Warehouse> GetAllWarehouses()
+        {
+            //create a list of warehouses
+            List<Warehouse> warehouses = new List<Warehouse>();
+            //create a command
+            SqlCommand command = new SqlCommand("SELECT * FROM Warehouses", _connection);
+            //open the connection
+            _connection.Open();
+            //create a reader
+            SqlDataReader reader = command.ExecuteReader();
+            //read the data
+            while (reader.Read())
+            {
+                //create a warehouse
+                Warehouse warehouse = new Warehouse();
+                //get the data from the reader
+                warehouse.Id = (int)reader["Id"];
+                warehouse.Address = (string)reader["Address"];
+                warehouse.Email = (string)reader["Email"];
+                warehouse.Phone = (int)reader["Phone"];
+                //add the warehouse to the list
+                warehouses.Add(warehouse);
+            }
+            //close the connection
+            _connection.Close();
+            //return the list
+            return warehouses;
+        }
+        //create a method to get a warehouse by id
+        public Warehouse GetWarehouseById(int id)
+        {
+            //create a warehouse
+            Warehouse warehouse = new Warehouse();
+            //create a command
+            SqlCommand command = new SqlCommand("SELECT * FROM Warehouses WHERE Id = @Id", _connection);
+            //add the parameter
+            command.Parameters.AddWithValue("@Id", id);
+            //open the connection
+            _connection.Open();
+            //create a reader
+            SqlDataReader reader = command.ExecuteReader();
+            //read the data
+            while (reader.Read())
+            {
+                //get the data from the reader
+                warehouse.Id = (int)reader["Id"];
+                warehouse.Address = (string)reader["Address"];
+                warehouse.Email = (string)reader["Email"];
+                warehouse.Phone = (int)reader["Phone"];
+            }
+
+            //close the connection
+            _connection.Close();
+
+            //return the warehouse
+            return warehouse;
+        }
+
+        //create a method to insert a warehouse
+        public void InsertWarehouse(Warehouse warehouse)
+        {
+            //create a command
+            SqlCommand command = new SqlCommand("INSERT INTO Warehouses (Address, Email, Phone) VALUES (@Address, @Email, @Phone)", _connection);
+            //add the parameters
+            command.Parameters.AddWithValue("@Address", warehouse.Address);
+            command.Parameters.AddWithValue("@Email", warehouse.Email);
+            command.Parameters.AddWithValue("@Phone", warehouse.Phone);
+            //open the connection
+            _connection.Open();
+            //execute the command
+            command.ExecuteNonQuery();
+            //close the connection
+            _connection.Close();
+        }
+
+    }
+
+    //create data mapper for class SparePartOrder from WebApplication1.Models; to sql server
+    public class SparePartOrderDataMapper
+    {
+        //create a connection to the database
+        private SqlConnection _connection;
+        //create a constructor for the class
+        public SparePartOrderDataMapper()
+        {
+            //create a connection string
+            string connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=Database;Integrated Security=True;Connect Timeout=60;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+            //create a connection
+            _connection = new SqlConnection(connectionString);
+        }
+        //create a method to get all the spare part orders
+        public List<SparePartOrder> GetAllSparePartOrders()
+        {
+            //create a list of spare part orders
+            List<SparePartOrder> sparePartOrders = new List<SparePartOrder>();
+            //create a command
+            SqlCommand command = new SqlCommand("SELECT * FROM SparePartOrders", _connection);
+            //open the connection
+            _connection.Open();
+            //create a reader
+            SqlDataReader reader = command.ExecuteReader();
+            //read the data
+            while (reader.Read())
+            {
+                //create a spare part order
+                SparePartOrder sparePartOrder = new SparePartOrder();
+                //get the data from the reader
+                sparePartOrder.Id = (int)reader["Id"];
+                sparePartOrder.Price = (decimal)reader["Price"];
+                sparePartOrder.State = (string)reader["State"];
+                sparePartOrder.DeliveryDate = (DateTime)reader["DeliveryDate"];
+                sparePartOrder.PurchaseDate = (DateTime)reader["PurchaseDate"];
+                sparePartOrder.Employee_id = (int)reader["Employee_id"];
+                sparePartOrder.Warehouse_id = (int)reader["Warehouse_id"];
+                sparePartOrder.SparePart_id = (int)reader["SparePart_id"];
+                //add the spare part order to the list
+                sparePartOrders.Add(sparePartOrder);
+            }
+            //close the connection
+            _connection.Close();
+            //return the list
+            return sparePartOrders;
+        }
+        //create a method to get a spare part order by id
+        public SparePartOrder GetSparePartOrderById(int id)
+        {
+            //create a spare part order
+            SparePartOrder sparePartOrder = new SparePartOrder();
+            //create a command
+            SqlCommand command = new SqlCommand("SELECT * FROM SparePartOrders WHERE Id = @Id", _connection);
+            //add the parameter
+            command.Parameters.AddWithValue("@Id", id);
+            //open the connection
+            _connection.Open();
+            //create a reader
+            SqlDataReader reader = command.ExecuteReader();
+            //read the data
+            while (reader.Read())
+            {
+                //get the data from the reader
+                sparePartOrder.Id = (int)reader["Id"];
+                sparePartOrder.Price = (decimal)reader["Price"];
+                sparePartOrder.State = (string)reader["State"];
+                sparePartOrder.DeliveryDate = (DateTime)reader["DeliveryDate"];
+                sparePartOrder.PurchaseDate = (DateTime)reader["PurchaseDate"];
+                sparePartOrder.Employee_id = (int)reader["Employee_id"];
+                sparePartOrder.Warehouse_id = (int)reader["Warehouse_id"];
+                sparePartOrder.SparePart_id = (int)reader["SparePart_id"];
+            }
+
+            //close the connection
+            _connection.Close();
+
+            //return the spare part order
+            return sparePartOrder;
+        }
+
+        //create a method to insert a spare part order
+        public void InsertSparePartOrder(SparePartOrder sparePartOrder)
+        {
+            //create a command
+            SqlCommand command = new SqlCommand("INSERT INTO SparePartOrders (Price, State, DeliveryDate, PurchaseDate, Employee_id, Warehouse_id, SparePart_id) VALUES (@Price, @State, @DeliveryDate, @PurchaseDate, @Employee_id, @Warehouse_id, @SparePart_id)", _connection);
+            //add the parameters
+            command.Parameters.AddWithValue("@Price", sparePartOrder.Price);
+            command.Parameters.AddWithValue("@State", sparePartOrder.State);
+            command.Parameters.AddWithValue("@DeliveryDate", sparePartOrder.DeliveryDate);
+            command.Parameters.AddWithValue("@PurchaseDate", sparePartOrder.PurchaseDate);
+            command.Parameters.AddWithValue("@Employee_id", sparePartOrder.Employee_id);
+            command.Parameters.AddWithValue("@Warehouse_id", sparePartOrder.Warehouse_id);
+            command.Parameters.AddWithValue("@SparePart_id", sparePartOrder.SparePart_id);
+            //open the connection
+            _connection.Open();
+            //execute the command
+            command.ExecuteNonQuery();
+            //close the connection
+            _connection.Close();
+        }
+    }
+
+    //create data mapper for class orderEmployee from WebApplication1.Models; to sql server
+    public class OrderEmployeeDataMapper
+    {
+        //create a connection to the database
+        private SqlConnection _connection;
+        //create a constructor for the class
+        public OrderEmployeeDataMapper()
+        {
+            //create a connection string
+            string connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=Database;Integrated Security=True;Connect Timeout=60;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+            //create a connection
+            _connection = new SqlConnection(connectionString);
+        }
+        //create a method to get all the order employees
+        public List<OrderEmployee> GetAllOrderEmployees()
+        {
+            //create a list of order employees
+            List<OrderEmployee> orderEmployees = new List<OrderEmployee>();
+            //create a command
+            SqlCommand command = new SqlCommand("SELECT * FROM OrderEmployees", _connection);
+            //open the connection
+            _connection.Open();
+            //create a reader
+            SqlDataReader reader = command.ExecuteReader();
+            //read the data
+            while (reader.Read())
+            {
+                //create an order employee
+                OrderEmployee orderEmployee = new OrderEmployee();
+                //get the data from the reader
+                orderEmployee.Order_id = (int)reader["Order_id"];
+                orderEmployee.Employee_id = (int)reader["Employee_id"];
+                //add the order employee to the list
+                orderEmployees.Add(orderEmployee);
+            }
+            //close the connection
+            _connection.Close();
+            //return the list
+            return orderEmployees;
+        }
+        //create a method to get an order employee by id
+        public OrderEmployee GetOrderEmployeeById(int id)
+        {
+            //create an order employee
+            OrderEmployee orderEmployee = new OrderEmployee();
+            //create a command
+            SqlCommand command = new SqlCommand("SELECT * FROM OrderEmployees WHERE Id = @Id", _connection);
+            //add the parameter
+            command.Parameters.AddWithValue("@Id", id);
+            //open the connection
+            _connection.Open();
+            //create a reader
+            SqlDataReader reader = command.ExecuteReader();
+            //read the data
+            while (reader.Read())
+            {
+                //get the data from the reader
+                orderEmployee.Order_id = (int)reader["Order_id"];
+                orderEmployee.Employee_id = (int)reader["Employee_id"];
+            }
+
+            //close the connection
+            _connection.Close();
+
+            //return the order employee
+            return orderEmployee;
+
+        }
+
+        //create a method to insert an order employee
+        public void InsertOrderEmployee(OrderEmployee orderEmployee)
+        {
+            //create a command
+            SqlCommand command = new SqlCommand("INSERT INTO OrderEmployees (Order_id, Employee_id) VALUES (@Order_id, @Employee_id)", _connection);
+            //add the parameters
+            command.Parameters.AddWithValue("@Order_id", orderEmployee.Order_id);
+            command.Parameters.AddWithValue("@Employee_id", orderEmployee.Employee_id);
+            //open the connection
+            _connection.Open();
+            //execute the command
+            command.ExecuteNonQuery();
+            //close the connection
+            _connection.Close();
         }
     }
 }
