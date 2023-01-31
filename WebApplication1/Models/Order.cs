@@ -2,7 +2,7 @@
 {
     public class Order
     {
-        private int _Id;
+        private int? _Id;
         private DateTime? _start_date;
         private DateTime? _end_date;
         private string? _state;
@@ -30,7 +30,7 @@
             Price = price;
         }
 
-        public int Id { get => _Id; set => _Id = value; }
+        public int? Id { get => _Id; set => _Id = value; }
         public DateTime? Start_date { get => _start_date; set => _start_date = value; }
         public DateTime? End_date { get => _end_date; set => _end_date = value; }
         public string? State { get => _state; set => _state = value; }
@@ -39,5 +39,10 @@
         public int? Employee_id { get => _employee_id; set => _employee_id = value; }
         public decimal? Price { get => _price; set => _price = value; }
         public int? Repair_type_id { get => _repair_type_id; set => _repair_type_id = value; }
+
+        public string ToString()
+        {
+            return $"Id: {Id}, Start_date: {Start_date}, End_date: {End_date}, State: {State}, Description: {Description}, Customer_id: {Customer_id}, Employee_id: {Employee_id}, Repair_type_id: {Repair_type_id}, Price: {Price}";
+        }
     }
 }

@@ -3,7 +3,6 @@ using WebApplication1.Models;
 
 namespace WebApplication1.Data
 {
-    //create data mapper for the class client to sql server
     public class ClientDataMapper
     {
         //create a connection to the database
@@ -111,7 +110,6 @@ namespace WebApplication1.Data
         }
     }
 
-    //create data mapper for the class Employee to sql server
     public class EmployeeDataMapper
     {
         //create a connection to the database
@@ -232,7 +230,6 @@ namespace WebApplication1.Data
 
     }
 
-    //create data mapper for the class Order from this namespace to sql server
     public class OrderDataMapper
     {
         //create a connection to the database
@@ -320,6 +317,14 @@ namespace WebApplication1.Data
 
             SqlCommand command = new SqlCommand("INSERT INTO Orders (Start_date, End_date, State, Description, Customer_id, Employee_id, Price) VALUES (@Start_date, @End_date, @State, @Description, @Customer_id, @Employee_id, @Price)", _connection);
 
+            command.Parameters.AddWithValue("@Start_date", order.Start_date);
+            command.Parameters.AddWithValue("@End_date", order.End_date);
+            command.Parameters.AddWithValue("@State", order.State);
+            command.Parameters.AddWithValue("@Description", order.Description);
+            command.Parameters.AddWithValue("@Customer_id", order.Customer_id);
+            command.Parameters.AddWithValue("@Employee_id", order.Employee_id);
+            command.Parameters.AddWithValue("@Price", order.Price);
+            
             _connection.Close();
 
         }
@@ -336,7 +341,6 @@ namespace WebApplication1.Data
         }
     }
 
-    //create data mapper for the class RepairType to sql server
     public class RepairTypeDataMapper
     {
         //create a connection to the database
@@ -437,7 +441,6 @@ namespace WebApplication1.Data
         }
     }
 
-    //create data mapper for class SparePart from WebApplication1.Models; to sql server
     public class SparePartDataMapper
     {
         //create a connection to the database
@@ -535,7 +538,6 @@ namespace WebApplication1.Data
         }
     }
 
-    //create data mapper for class Warehouse from WebApplication1.Models; to sql server
     public class WarehouseDataMapper
     {
         //create a connection to the database
@@ -626,7 +628,6 @@ namespace WebApplication1.Data
 
     }
 
-    //create data mapper for class SparePartOrder from WebApplication1.Models; to sql server
     public class SparePartOrderDataMapper
     {
         //create a connection to the database
@@ -728,7 +729,6 @@ namespace WebApplication1.Data
         }
     }
 
-    //create data mapper for class orderEmployee from WebApplication1.Models; to sql server
     public class OrderEmployeeDataMapper
     {
         //create a connection to the database
