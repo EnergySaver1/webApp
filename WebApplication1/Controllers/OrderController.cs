@@ -44,7 +44,6 @@ namespace WebApplication1.Controllers
             order.State = formcollection["State"];
             order.Description = formcollection["Description"];
             order.Customer_id = int.Parse(formcollection["Customer_id"]);
-            order.Employee_id = int.Parse(formcollection["Employee_id"]);
             order.Price = int.Parse(formcollection["Price"]);
             order.Repair_type_id = int.Parse(formcollection["Repair_type_id"]);
             

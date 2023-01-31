@@ -80,7 +80,7 @@ namespace WebApplication1.Data
         public void InsertClient(Client client)
         {
             //create a command
-            SqlCommand command = new SqlCommand("INSERT INTO Clients (FirstName, LastName, Email, Phone) VALUES (@FirstName, @LastName, @Email, @Phone)", _connection);
+            SqlCommand command = new SqlCommand("INSERT INTO Clients (FirstName, LastName, Email, Phone, Address) VALUES (@FirstName, @LastName, @Email, @Phone, @Address)", _connection);
             //add the parameters
             command.Parameters.AddWithValue("@FirstName", client.Firstname);
             command.Parameters.AddWithValue("@LastName", client.Lastname);
@@ -196,7 +196,7 @@ namespace WebApplication1.Data
         public void InsertEmployee(Employee employee)
         {
             //create a command
-            SqlCommand command = new SqlCommand("INSERT INTO Employees (FirstName, LastName, Email, Phone, Address, Salary, HireDate, JobTitle, Department) VALUES (@FirstName, @LastName, @Email, @Phone, @Address, @Salary, @HireDate, @JobTitle, @Department)", _connection);
+            SqlCommand command = new SqlCommand("INSERT INTO Employees (FirstName, LastName, Email, Phone, Address, Salary, DateOfEmployment, Position, BirthNumber) VALUES (@FirstName, @LastName, @Email, @Phone, @Address, @Salary, @DateOfEmployment, @Position, @BirthNumber)", _connection);
             //add the parameters
             command.Parameters.AddWithValue("@FirstName", employee.Firstname);
             command.Parameters.AddWithValue("@LastName", employee.Lastname);
@@ -226,7 +226,6 @@ namespace WebApplication1.Data
             _connection.Close();
 
         }
-
 
     }
 
@@ -265,7 +264,6 @@ namespace WebApplication1.Data
                 order.State = (String)reader["State"];
                 order.Description = (String)reader["Description"];
                 order.Customer_id = (int)reader["Customer_id"];
-                order.Employee_id = (int)reader["Employee_id"];
                 order.Repair_type_id = (int)reader["RepairType_id"];
                 order.Price = (decimal)reader["Price"];
                 //add the order to the list
@@ -299,7 +297,6 @@ namespace WebApplication1.Data
                 order.State = (String)reader["State"];
                 order.Description = (String)reader["Description"];
                 order.Customer_id = (int)reader["Customer_id"];
-                order.Employee_id = (int)reader["Employee_id"];
                 order.Repair_type_id = (int)reader["RepairType_id"];
                 order.Price = (decimal)reader["Price"];
             }
@@ -315,16 +312,20 @@ namespace WebApplication1.Data
         {
             _connection.Open();
 
-            SqlCommand command = new SqlCommand("INSERT INTO Orders (Start_date, End_date, State, Description, Customer_id, Employee_id, Price) VALUES (@Start_date, @End_date, @State, @Description, @Customer_id, @Employee_id, @Price)", _connection);
+            SqlCommand command = new SqlCommand("INSERT INTO Orders (Start_date, End_date, State, Description, Customer_id, RepairType_id, Price) VALUES (@Start_date, @End_date, @State, @Description, @Customer_id, @RepairType_id, @Price)", _connection);
 
             command.Parameters.AddWithValue("@Start_date", order.Start_date);
             command.Parameters.AddWithValue("@End_date", order.End_date);
             command.Parameters.AddWithValue("@State", order.State);
             command.Parameters.AddWithValue("@Description", order.Description);
             command.Parameters.AddWithValue("@Customer_id", order.Customer_id);
-            command.Parameters.AddWithValue("@Employee_id", order.Employee_id);
+            command.Parameters.AddWithValue("@RepairType_id", order.Repair_type_id);
+
             command.Parameters.AddWithValue("@Price", order.Price);
-            
+
+            //execute the command
+            command.ExecuteNonQuery();
+            //close the connection
             _connection.Close();
 
         }
@@ -522,9 +523,9 @@ namespace WebApplication1.Data
         public void InsertSparePart(SparePart sparePart)
         {
             //create a command
-            SqlCommand command = new SqlCommand("INSERT INTO SpareParts (Name, Manufacturer, Price, Order_id, Available) VALUES (@Name, @Manufacturer, @Price, @Order_id, @Available)", _connection);
+            SqlCommand command = new SqlCommand("INSERT INTO SpareParts (Type, Manufacturer, Price, Order_id, Available) VALUES (@Name, @Manufacturer, @Price, @Order_id, @Available)", _connection);
             //add the parameters
-            command.Parameters.AddWithValue("@Name", sparePart.Type);
+            command.Parameters.AddWithValue("@Type", sparePart.Type);
             command.Parameters.AddWithValue("@Manufacturer", sparePart.Manufacturer);
             command.Parameters.AddWithValue("@Price", sparePart.Price);
             command.Parameters.AddWithValue("@Order_id", sparePart.Order_id);
