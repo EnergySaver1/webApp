@@ -8,7 +8,6 @@ namespace WebApplication1.Controllers
     
     public class OrderController : Controller
     {
-        
         public ActionResult Index()
         {
             OrderDataMapper orderDataMapper = new OrderDataMapper();
@@ -26,8 +25,10 @@ namespace WebApplication1.Controllers
 
         // GET: OrderController/Create
         [HttpGet]
-        public ActionResult Create(Order order)
+        public ActionResult Create(int id)
         {
+            ClientDataMapper clientDataMapper = new ClientDataMapper();
+            var client = clientDataMapper.GetClientById(id);
             return View();
         }
 
@@ -44,7 +45,7 @@ namespace WebApplication1.Controllers
             order.State = formcollection["State"];
             order.Description = formcollection["Description"];
             order.Customer_id = int.Parse(formcollection["Customer_id"]);
-            order.Price = int.Parse(formcollection["Price"]);
+            order.Price = decimal.Parse(formcollection["Price"]);
             order.Repair_type_id = int.Parse(formcollection["Repair_type_id"]);
             
             Console.WriteLine(order.ToString());

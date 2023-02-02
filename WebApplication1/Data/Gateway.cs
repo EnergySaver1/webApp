@@ -6,32 +6,33 @@ namespace WebApplication1.Data
     //Creating  gateway class to serialize Invoice class from models into JSON
     public class Gateway
     {
-        public void SerializeToJson(Invoice invoice, string filePath)
+
+        //serialize list of invoices to file
+        public void SerializeToJson(List<Invoice> invoices, string filePath)
         {
-            try
+            string json = JsonConvert.SerializeObject(invoices);
+
+            using (StreamWriter writer = new StreamWriter(filePath))
             {
-                using (var stream = File.Create(filePath))
-                using (var writer = new StreamWriter(stream))
-                {
-                    var json = JsonConvert.SerializeObject(invoice);
-                    writer.Write(json);
-                }
+                writer.WriteLine(json);
             }
-            catch (Exception ex)
-            {
-                // handle exception
-                Console.WriteLine("An error occurred while writing the JSON file: " + ex.Message);
-            }
+
+            Console.WriteLine("Invoices saved to invoices.json");
+
         }
 
-        public Invoice DeserializeFromJson(string filePath)
+        public List<Invoice> DeserializeFromJson(string filePath)
         {
-            using (var stream = File.OpenRead(filePath))
-            using (var reader = new StreamReader(stream))
+            List<Invoice> invoices;
+            using (StreamReader reader = new StreamReader("invoices.json"))
             {
-                var json = reader.ReadToEnd();
-                return JsonConvert.DeserializeObject<Invoice>(json);
+                string json = reader.ReadToEnd();
+                invoices = JsonConvert.DeserializeObject<List<Invoice>>(json);
             }
+
+            Console.WriteLine("Invoices loaded from invoices.json");
+
+            return invoices;
         }
     }
 }

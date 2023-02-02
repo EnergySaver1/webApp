@@ -21,7 +21,7 @@ namespace WebApplication1.Data
             //create a list of clients
             List<Client> clients = new List<Client>();
             //create a command
-            SqlCommand command = new SqlCommand("SELECT * FROM Clients", _connection);
+            SqlCommand command = new SqlCommand("SELECT * FROM Client", _connection);
             //open the connection
             _connection.Open();
             //create a reader
@@ -53,7 +53,7 @@ namespace WebApplication1.Data
             //create a client
             Client client = new Client();
             //create a command
-            SqlCommand command = new SqlCommand("SELECT * FROM Clients WHERE Id = @Id", _connection);
+            SqlCommand command = new SqlCommand("SELECT * FROM Client WHERE Id = @Id", _connection);
             //add the parameter
             command.Parameters.AddWithValue("@Id", id);
             //open the connection
@@ -80,7 +80,7 @@ namespace WebApplication1.Data
         public void InsertClient(Client client)
         {
             //create a command
-            SqlCommand command = new SqlCommand("INSERT INTO Clients (FirstName, LastName, Email, Phone, Address) VALUES (@FirstName, @LastName, @Email, @Phone, @Address)", _connection);
+            SqlCommand command = new SqlCommand("INSERT INTO Client (FirstName, LastName, Email, Phone, Address) VALUES (@FirstName, @LastName, @Email, @Phone, @Address)", _connection);
             //add the parameters
             command.Parameters.AddWithValue("@FirstName", client.Firstname);
             command.Parameters.AddWithValue("@LastName", client.Lastname);
@@ -98,8 +98,27 @@ namespace WebApplication1.Data
         public void DeleteClient(Client client)
         {
             //create a command
-            SqlCommand command = new SqlCommand("DELETE FROM Clients WHERE Id = @Id", _connection);
+            SqlCommand command = new SqlCommand("DELETE FROM Client WHERE Id = @Id", _connection);
             //add the parameters
+            command.Parameters.AddWithValue("@Id", client.Id);
+            //open the connection
+            _connection.Open();
+            //execute the command
+            command.ExecuteNonQuery();
+            //close the connection
+            _connection.Close();
+        }
+
+        public void UpdateClient(Client client)
+        {
+
+            SqlCommand command = new SqlCommand("UPDATE Client SET FirstName=@FirstName , LastName=@LastName , Email=@Email, Phone=@Phone, Address=@Address  WHERE Id = @Id", _connection);
+
+            command.Parameters.AddWithValue("@FirstName", client.Firstname);
+            command.Parameters.AddWithValue("@LastName", client.Lastname);
+            command.Parameters.AddWithValue("@Email", client.Email);
+            command.Parameters.AddWithValue("@Phone", client.Phone);
+            command.Parameters.AddWithValue("@Address", client.Address);
             command.Parameters.AddWithValue("@Id", client.Id);
             //open the connection
             _connection.Open();
