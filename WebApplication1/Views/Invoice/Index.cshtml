@@ -14,19 +14,13 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Ico)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Dic)
+                @Html.DisplayNameFor(model => model.VariableSymbol)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.BankAccount)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.BankCode)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.VariableSymbol)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Id)
@@ -59,10 +53,7 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Ico)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Dic)
+                @Html.DisplayFor(modelItem => item.VariableSymbol)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.BankAccount)
@@ -70,9 +61,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.BankCode)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.VariableSymbol)
-            </td>
+            
             <td>
                 @Html.DisplayFor(modelItem => item.Id)
             </td>
@@ -98,9 +87,8 @@
                 @Html.DisplayFor(modelItem => item.Repair_type_id)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
                 @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                @Html.ActionLink("Delete", "Delete", new {  id=item.Id  })
             </td>
         </tr>
 }

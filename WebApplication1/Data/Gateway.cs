@@ -10,26 +10,41 @@ namespace WebApplication1.Data
         //serialize list of invoices to file
         public void SerializeToJson(List<Invoice> invoices, string filePath)
         {
-            string json = JsonConvert.SerializeObject(invoices);
-
-            using (StreamWriter writer = new StreamWriter(filePath))
+            System.IO.File.WriteAllText(filePath, string.Empty);
+            try
             {
-                writer.WriteLine(json);
+                using (var stream = File.Create(filePath))
+                using (var writer = new StreamWriter(stream))
+                {
+                    var json = JsonConvert.SerializeObject(invoices);
+                    writer.Write(json);
+                }
             }
-
-            Console.WriteLine("Invoices saved to invoices.json");
+            catch (Exception ex)
+            {
+                // handle exception
+                Console.WriteLine("An error occurred while writing the JSON file: " + ex.Message);
+            }
 
         }
 
         public List<Invoice> DeserializeFromJson(string filePath)
         {
             List<Invoice> invoices;
-            using (StreamReader reader = new StreamReader("invoices.json"))
+            using (StreamReader reader = new StreamReader(filePath))
             {
                 string json = reader.ReadToEnd();
-                invoices = JsonConvert.DeserializeObject<List<Invoice>>(json);
-            }
+                if (!string.IsNullOrWhiteSpace(json))
+                {
+                    invoices = JsonConvert.DeserializeObject<List<Invoice>>(json);
+                }
 
+                else
+                {
+                    invoices = new List<Invoice>();
+
+                }
+            }
             Console.WriteLine("Invoices loaded from invoices.json");
 
             return invoices;

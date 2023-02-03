@@ -8,13 +8,13 @@ namespace WebApplication1.Controllers
 {
     public class InvoiceController : Controller
     {
-        string filepath = @"C:\Users\ksedl\test1.source2.bin";
-        List<Invoice> invoices = new List<Invoice>();
-        
+        string filepath = @"C:\Users\ksedl\invoices.json";
+
         // GET: InvoiceController
         public ActionResult Index()
         {
-            return View(invoices);
+            Gateway gateway = new Gateway();
+            return View(gateway.DeserializeFromJson(filepath));
         }
 
         // GET: InvoiceController/Details/5
@@ -52,20 +52,23 @@ namespace WebApplication1.Controllers
             invoice.Customer_id = int.Parse(collection["Customer_id"]);
             invoice.Repair_type_id = int.Parse(collection["Repair_type_id"]);
             invoice.Price = Decimal.Parse(collection["Price"]);
+            invoice.VariableSymbol = int.Parse(collection["VariableSymbol"]);
 
-            Console.WriteLine("***" + invoice.ToString());
+            Gateway gateway = new Gateway();
+            List<Invoice> invoices = gateway.DeserializeFromJson(filepath);
             invoices.Add(invoice);
+            gateway.SerializeToJson(invoices, filepath);
             return RedirectToAction("Index");
 
         }
 
-        // GET: InvoiceController/Edit/5
+        // GET: InvoiceController/Edit
         public ActionResult Edit(int id)
         {
             return View();
         }
 
-        // POST: InvoiceController/Edit/5
+        // POST: InvoiceController/Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, IFormCollection collection)
@@ -80,25 +83,27 @@ namespace WebApplication1.Controllers
             }
         }
 
-        // GET: InvoiceController/Delete/5
+        // GET: InvoiceController/Delete
         public ActionResult Delete(int id)
         {
-            return View();
+            Gateway gateway = new Gateway();
+            List<Invoice> invoices = gateway.DeserializeFromJson(filepath);
+            var item = invoices.FirstOrDefault(o => o.Id == id);
+            Console.WriteLine("***" + item.Id);
+            return View(item);
         }
 
-        // POST: InvoiceController/Delete/5
+        // POST: InvoiceController/Delete
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Delete(Invoice invoice, IFormCollection collection)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            Gateway gateway = new Gateway();
+            List<Invoice> invoices = gateway.DeserializeFromJson(filepath);
+            invoices.Remove(invoice);
+            gateway.SerializeToJson(invoices, filepath);
+            return RedirectToAction("Index");
+
         }
     }
 }

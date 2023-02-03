@@ -37,9 +37,13 @@ namespace WebApplication1.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(IFormCollection formcollection)
         {
-            Order order = new Order();
-            OrderDataMapper orderDataMapper = new OrderDataMapper();
             
+            OrderDataMapper orderDataMapper = new OrderDataMapper();
+            // OrderEmployeeDataMapper orderEmployeeMapper = new OrderEmployeeDataMapper();
+
+            Order order = new Order();
+           // OrderEmployee orderEmployee = new OrderEmployee();
+
             order.Start_date = DateTime.Parse(formcollection["Start_date"]);
             order.End_date = DateTime.Parse(formcollection["End_date"]);
             order.State = formcollection["State"];
@@ -47,6 +51,7 @@ namespace WebApplication1.Controllers
             order.Customer_id = int.Parse(formcollection["Customer_id"]);
             order.Price = decimal.Parse(formcollection["Price"]);
             order.Repair_type_id = int.Parse(formcollection["Repair_type_id"]);
+
             
             Console.WriteLine(order.ToString());
             

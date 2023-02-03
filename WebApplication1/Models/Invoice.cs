@@ -22,7 +22,7 @@
             Customer_id = order.Customer_id;
             Repair_type_id = order.Repair_type_id;
             Price = order.Price;
-
+            VariableSymbol = order.Id;
         }
 
         public Invoice()
