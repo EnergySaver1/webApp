@@ -18,7 +18,9 @@ namespace WebApplication1.Controllers
         // GET: ClientController1/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            ClientDataMapper clientDataMapper = new ClientDataMapper();
+            var client = clientDataMapper.GetClientById(id);
+            return View(client);
         }
 
         // GET: ClientController1/Create
@@ -75,22 +77,19 @@ namespace WebApplication1.Controllers
         // GET: ClientController1/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            ClientDataMapper clientDataMapper = new ClientDataMapper();
+            var client = clientDataMapper.GetClientById(id);
+            return View(client);
         }
 
         // POST: ClientController1/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Delete(Client client, IFormCollection collection)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            ClientDataMapper clientDataMapper = new ClientDataMapper();
+            clientDataMapper.DeleteClient(client);
+            return RedirectToAction("Index");
         }
     }
 }

@@ -29,6 +29,7 @@ namespace WebApplication1.Controllers
         {
             ClientDataMapper clientDataMapper = new ClientDataMapper();
             var client = clientDataMapper.GetClientById(id);
+
             return View();
         }
 
@@ -63,43 +64,47 @@ namespace WebApplication1.Controllers
         // GET: OrderController/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            OrderDataMapper orderDataMapper = new OrderDataMapper();
+            var order = orderDataMapper.GetOrderById(id);
+            return View(order);
         }
 
         // POST: OrderController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(int id, IFormCollection collection, Order order)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            OrderDataMapper orderDataMapper = new OrderDataMapper();
+
+            order.Start_date = DateTime.Parse(collection["Start_date"]);
+            order.End_date = DateTime.Parse(collection["End_date"]);
+            order.State = collection["State"];
+            order.Description = collection["Description"];
+            order.Customer_id = int.Parse(collection["Customer_id"]);
+            order.Price = decimal.Parse(collection["Price"]);
+            order.Repair_type_id = int.Parse(collection["Repair_type_id"]);
+
+            orderDataMapper.UpdateOrder(order);
+            return RedirectToAction("Index");
         }
 
         // GET: OrderController/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            OrderDataMapper orderDataMapper = new OrderDataMapper();
+            var order = orderDataMapper.GetOrderById(id);
+            return View(order);
         }
 
         // POST: OrderController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Delete(Order order, IFormCollection collection)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            OrderDataMapper orderDataMapper = new OrderDataMapper();
+            orderDataMapper.DeleteOrder(order);
+            return RedirectToAction("Index");
+
         }
     }
 }

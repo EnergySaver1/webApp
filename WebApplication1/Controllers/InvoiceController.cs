@@ -17,11 +17,14 @@ namespace WebApplication1.Controllers
             return View(gateway.DeserializeFromJson(filepath));
         }
 
-        // GET: InvoiceController/Details/5
+        // GET: InvoiceController/Details
         public ActionResult Details(int id)
         {
 
-            return View();
+            Gateway gateway = new Gateway();
+            List<Invoice> invoices = gateway.DeserializeFromJson(filepath);
+            Invoice item = invoices.FirstOrDefault(o => o.Id == id);
+            return View(item);
         }
 
         // GET: InvoiceController/Create
@@ -100,7 +103,15 @@ namespace WebApplication1.Controllers
         {
             Gateway gateway = new Gateway();
             List<Invoice> invoices = gateway.DeserializeFromJson(filepath);
-            invoices.Remove(invoice);
+            
+            foreach (Invoice i in invoices)
+            {
+                if (i.Id == invoice.Id)
+                {
+                    invoices.Remove(i);
+                    break;
+                }
+            }
             gateway.SerializeToJson(invoices, filepath);
             return RedirectToAction("Index");
 

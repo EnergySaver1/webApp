@@ -355,9 +355,34 @@ namespace WebApplication1.Data
             _connection.Open();
 
             SqlCommand command = new SqlCommand("DELETE FROM Orders WHERE Id = @Id", _connection);
+            command.Parameters.AddWithValue("@Id", order.Id);
+            command.ExecuteNonQuery();
 
             _connection.Close();
 
+        }
+
+
+        public void UpdateOrder(Order order)
+        {
+
+            SqlCommand command = new SqlCommand("UPDATE Orders SET Start_date=@Start_date, End_date=@End_date, State=@State, Description=@Description, Customer_id=@Customer_id, RepairType_id=@RepairType_id, Price=@Price WHERE Id = @Id", _connection);
+
+            command.Parameters.AddWithValue("@Start_date", order.Start_date);
+            command.Parameters.AddWithValue("@End_date", order.End_date);
+            command.Parameters.AddWithValue("@State", order.State);
+            command.Parameters.AddWithValue("@Description", order.Description);
+            command.Parameters.AddWithValue("@Customer_id", order.Customer_id);
+            command.Parameters.AddWithValue("@RepairType_id", order.Repair_type_id);
+            command.Parameters.AddWithValue("@Id", order.Id);
+            command.Parameters.AddWithValue("@Price", order.Price);
+
+            //open the connection
+            _connection.Open();
+            //execute the command
+            command.ExecuteNonQuery();
+            //close the connection
+            _connection.Close();
         }
     }
 
